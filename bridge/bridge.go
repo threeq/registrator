@@ -340,11 +340,9 @@ func (b *Bridge) newService(port ServicePort, isgroup bool) *Service {
 		service.Tags = combineTags(
 			mapDefault(metadata, "tags", ""), b.config.ForceTags)
 	}
-	service.Tags = combineTags(
-		mapDefault(metadata, "tags", ""), "image="+container.Config.Image)
 	created := container.Created.Format("2006-01-02 15:04:05")
-	service.Tags = combineTags(
-		mapDefault(metadata, "tags", ""), "created="+created)
+	service.Tags = append(service.Tags, "image="+container.Config.Image)
+	service.Tags = append(service.Tags, "created="+created)
 
 	id := mapDefault(metadata, "id", "")
 	if id != "" {
